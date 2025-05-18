@@ -99,7 +99,7 @@
         <div class="about-section" style="text-align: center;">
             <h2>Join Our Community</h2>
             <p>Whether you're looking for cleaning services or offering them, we'd love to have you as part of the CleanMatch family.</p>
-            <a href="register.html" class="btn" style="background-color: #4CAF50; color: white;">Sign Up Now</a>
+            
         </div>
     </div>
 
