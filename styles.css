@@ -1,0 +1,93 @@
+/* Modern, clean login form styling */
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.login-container {
+  background: #fff;
+  padding: 2rem 3rem 3rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  width: 320px;
+  text-align: center;
+}
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  color: #4a4a4a;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+  border-color: #667eea;
+  outline: none;
+}
+.login-container button {
+  background-color: #667eea;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0.75rem 0;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.login-container button:hover {
+  background-color: #5a67d8;
+}
+.error-msg {
+  color: #e53e3e;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+.footer {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #777;
+}
+/* Center form in page */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh-100px; /* center vertically */
+  background-color: #f2f4f8;
+  padding: 2rem;
+}
+
+/* Box style */
+.register-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100px; /* ✅ control width here */
+  margin: auto;
+}
+
+.register-box input,
+.register-box select {
+  width: 100%;            /* match to box */
+  max-width: 100px;       /* ✅ make inputs shorter */
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
