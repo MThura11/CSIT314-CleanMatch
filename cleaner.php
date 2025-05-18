@@ -288,7 +288,7 @@ $avgRating = $orderManager->getAverageRating($homeCleanerID);
   </header>
 
 
-<h1>Cleaner's  Page Placeholder</h1>
+<h1>Cleaner's  Page </h1>
 <form method="GET" action="cleanerDetail.php">
   
   <button type="submit">View My Details</button>

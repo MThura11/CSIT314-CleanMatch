@@ -94,29 +94,7 @@
             <h2>Our Team</h2>
             <p>CleanMatch is built by a diverse team of technologists, operations experts, and cleaning industry veterans who are passionate about improving the service experience for everyone involved.</p>
             
-            <div class="team">
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jessica Chen">
-                    <h3>Jessica Chen</h3>
-                    <p>CEO & Co-Founder</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="David Park">
-                    <h3>David Park</h3>
-                    <p>CTO & Co-Founder</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Maria Gonzalez">
-                    <h3>Maria Gonzalez</h3>
-                    <p>Head of Operations</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/men/25.jpg" alt="Thomas Wilson">
-                    <h3>Thomas Wilson</h3>
-                    <p>Customer Success</p>
-                </div>
-            </div>
-        </div>
+
 
         <div class="about-section" style="text-align: center;">
             <h2>Join Our Community</h2>
