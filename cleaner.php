@@ -26,17 +26,20 @@ try {
 
 
 // Fetch distinct order types
-$stmt = $conn->prepare("
+/*
+$stmt = $pdo->prepare("
     SELECT * FROM orders 
     WHERE status = 'pending'
 ");
 $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+*/
+
 
 
 
 //get homeCleanerID
-$stmt = $pdo->prepare("SELECT homeCleanerID FROM homecleaners WHERE userId = ?");
+$stmt = $pdo->prepare("SELECT homeCleanerID FROM homeCleaners WHERE userId = ?");
 $stmt->execute([$userId]);
 $cleaner = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -53,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accept_order_id'])) {
     $stmt->execute([$homeCleanerID, $orderId]);
 }
 
-
+/*
 $pendingFilter = $_GET['pending_service'] ?? 'all';
 // Get distinct service names from pending orders
 $stmt = $pdo->query("
@@ -79,7 +82,58 @@ if ($pendingFilter === 'all') {
     $stmt->execute([$pendingFilter]);
 }
 $pendingOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+*/
 
+//test
+$pendingFilter = $_GET['pending_service'] ?? 'all';
+
+// Fetch list of distinct services from unassigned pending orders
+$stmt = $pdo->query("
+    SELECT DISTINCT serviceName 
+    FROM orders 
+    WHERE status = 'pending' AND homeCleanerID = NULL
+      AND serviceName IS NOT NULL AND serviceName != ''
+");
+$pendingServices = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$acceptedFilter = $_GET['accepted_service'] ?? 'all';
+
+// Optional: filter by service
+$pendingFilter = $_GET['pending_service'] ?? 'all';
+
+if ($pendingFilter === 'all') {
+    $stmt = $pdo->prepare("
+        SELECT * FROM orders 
+        WHERE status = 'pending' AND homeCleanerID = ?
+    ");
+    $stmt->execute([$homeCleanerID]);
+} else {
+    $stmt = $pdo->prepare("
+        SELECT * FROM orders 
+        WHERE status = 'pending' AND homeCleanerID = ? AND serviceName = ?
+    ");
+    $stmt->execute([$homeCleanerID,$pendingFilter]);
+}
+
+$pendingOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Debug output
+/*
+echo "<pre>Found " . count($pendingOrders) . " pending orders</pre>";
+foreach ($pendingOrders as $order) {
+    echo "Order ID: " . $order['orderId'] . " - Service: " . $order['serviceName'] . "<br>";
+}
+*/
+$stmt = $pdo->prepare("
+    SELECT * FROM orders 
+    WHERE status = 'pending'
+");
+$stmt->execute();
+
+$pendingOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+/*
+echo "<pre>";
+print_r($pendingOrders);
+echo "</pre>";
+*/
 
 // Example display
 //foreach ($orders as $order) {
@@ -98,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complete_order_id']))
 }
 
 // Handle Decline
+/*
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['decline_order_id'])) {
     $orderId = $_POST['decline_order_id'];
 
@@ -113,6 +168,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['decline_order_id'])) 
     header("Location: cleaner.php");
     exit;
 }
+*/
+// Handle Decline
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['decline_order_id'])) {
+    $orderId = $_POST['decline_order_id'];
+
+    // Set status back to 'pending' and mark the order as unassigned (homeCleanerID = 0)
+    $stmt = $pdo->prepare("
+        UPDATE orders 
+        SET status = 'pending'
+        WHERE orderId = ? AND homeCleanerID = ?
+    ");
+    
+    //error
+    /*
+    echo "<pre>";
+echo "Order ID: " . htmlspecialchars($_POST['decline_order_id']) . "\n";
+echo "Current Cleaner ID (being set to NULL from): " . htmlspecialchars($homeCleanerID) . "\n";
+echo "</pre>";
+exit;
+
+*/
+    $stmt->execute([$orderId, $homeCleanerID]);
+
+    // ✅ Redirect to refresh the page after decline
+    header("Location: cleaner.php");
+    exit;
+}
+
 
 
 

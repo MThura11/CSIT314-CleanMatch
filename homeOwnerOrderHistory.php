@@ -19,7 +19,7 @@ class CleanerManager {
     public function getOrderHistory(int $userId, string $service = '', string $orderDate = ''): array {
         $sql = "SELECT o.*, c.fullName AS cleanerName
                 FROM orders o
-                JOIN homecleaners c ON o.homeCleanerID = c.homeCleanerID
+                JOIN homeCleaners c ON o.homeCleanerID = c.homeCleanerID
                 WHERE o.homeOwnerId = :userId AND o.status = 'completed'";
 
         if ($service) {

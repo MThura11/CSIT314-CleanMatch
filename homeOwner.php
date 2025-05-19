@@ -19,7 +19,7 @@ class CleanerManager {
     public function searchCleaners(string $term): array {
         $sql = "SELECT c.homeCleanerID, c.fullName, c.location, c.experienceYears, c.availability,
                        AVG(o.rating) AS avgRating, COUNT(o.rating) AS ratingCount
-                FROM homecleaners c
+                FROM homeCleaners c
                 LEFT JOIN orders o ON c.homeCleanerID = o.homeCleanerID AND o.status = 'completed'  -- Only include completed orders
                 WHERE c.fullName LIKE :term OR c.location LIKE :term
                 GROUP BY c.homeCleanerID
@@ -34,7 +34,7 @@ class CleanerManager {
     public function getAllCleaners(): array {
         $sql = "SELECT c.homeCleanerID, c.fullName, c.location, c.experienceYears, c.availability,
                        AVG(o.rating) AS avgRating, COUNT(o.rating) AS ratingCount
-                FROM homecleaners c
+                FROM homeCleaners c
                 LEFT JOIN orders o ON c.homeCleanerID = o.homeCleanerID AND o.status = 'completed'  -- Only include completed orders
                 GROUP BY c.homeCleanerID
                 ORDER BY c.fullName";
@@ -58,7 +58,7 @@ class CleanerManager {
     public function getPendingOrders(int $userId): array {
         $sql = "SELECT o.*, c.fullName AS cleanerName
                 FROM orders o
-                JOIN homecleaners c ON o.homeCleanerID = c.homeCleanerID
+                JOIN homeCleaners c ON o.homeCleanerID = c.homeCleanerID
                 WHERE o.homeOwnerId = :userId AND o.status != 'completed'
                 ORDER BY o.orderDate DESC, o.startTime DESC";
         $stmt = $this->pdo->prepare($sql);

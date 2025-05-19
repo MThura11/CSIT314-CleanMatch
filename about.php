@@ -94,7 +94,8 @@
             <h2>Our Team</h2>
             <p>CleanMatch is built by a diverse team of technologists, operations experts, and cleaning industry veterans who are passionate about improving the service experience for everyone involved.</p>
             
-
+            
+        </div>
 
         <div class="about-section" style="text-align: center;">
             <h2>Join Our Community</h2>

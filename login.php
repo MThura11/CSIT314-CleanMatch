@@ -1,7 +1,6 @@
 <?php
 session_start();
 require 'db.php';
-
 class UserAuth {
     private $pdo;
 
@@ -30,15 +29,10 @@ class UserAuth {
         }
         return false;
     }
-
-    public function isCleanerExists($cleanerId) {
-        $stmt = $this->pdo->prepare("SELECT 1 FROM homecleaners WHERE homeCleanerID = ?");
-        $stmt->execute([$cleanerId]);
-        return (bool)$stmt->fetchColumn();
-    }
 }
 
-$auth = new UserAuth($dbHost, $dbName, $dbUser , $dbPass);
+
+$auth = new UserAuth($dbHost, $dbName, $dbUser, $dbPass);
 
 $error = "";
 
@@ -50,23 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($userType !== false) {
         switch ($userType) {
-            case 'C':
-                // Check if the cleaner exists in the database
-                if ($auth->isCleanerExists($_SESSION['userid'])) {
-                    header("Location: cleaner.php");
-                } else {
-                    header("Location: cleanerDetail.php");
-                }
-                exit();
-            case 'A':
-                header("Location: admin.php");
-                exit();
-            case 'U':
-                header("Location: homeOwner.php");
-                exit();
-            case 'P':
-                header("Location: platformOwner.php");
-                exit();
+            case 'C': header("Location: cleanerDetail.php"); exit();
+            case 'A': header("Location: admin.php"); exit();
+            case 'U': header("Location: homeOwner.php"); exit();
+            case 'P': header("Location: platformOwner.php"); exit();
             default:
                 $error = "Invalid user type.";
                 session_destroy();
@@ -106,8 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" style="color: black; background: none; border: none; width: 100%; text-align: left;">
             Logout
             </button>
+
             </form>
+
             </li>
+
         <?php else: ?>
           <li><a href="login.php">Login</a></li>
           <li><a href="register.php">Register</a></li>
@@ -165,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   form {
     margin-bottom: 20px;
   }
-  input{
+  input[] {
     padding: 8px 12px;
     font-size: 1rem;
     width: 250px;

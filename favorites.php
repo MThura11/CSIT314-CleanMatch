@@ -21,7 +21,7 @@ class CleanerManager {
         $sql = "SELECT c.homeCleanerID, c.fullName, c.location, c.experienceYears, c.availability,
                        AVG(o.rating) AS avgRating, COUNT(o.rating) AS ratingCount
                 FROM favorites f
-                INNER JOIN homecleaners c ON f.homeCleanerID = c.homeCleanerID
+                INNER JOIN homeCleaners c ON f.homeCleanerID = c.homeCleanerID
                 LEFT JOIN orders o ON c.homeCleanerID = o.homeCleanerID
                 WHERE f.userId = :userId
                 GROUP BY c.homeCleanerID

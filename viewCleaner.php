@@ -18,7 +18,7 @@ class CleanerManager {
 
     public function getCleanerById(int $id): ?array {
         $sql = "SELECT fullName, phoneNumber, email, location, experienceYears, hourlyRate
-                FROM homecleaners 
+                FROM homeCleaners 
                 WHERE homeCleanerID = :id 
                 LIMIT 1";
         $stmt = $this->pdo->prepare($sql);

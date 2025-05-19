@@ -49,7 +49,7 @@ session_start(); ?>
 
   <div class="hero">
     <h1>Welcome to CleanMatch</h1>
-    <h1>This is a CSCI314 Coursework Project(not a real company)</h1>
+    <h1>This is for CSCI314 Coursework Not A REAL CLEANING SERVICE</h1>
     <p>Your trusted platform for connecting homeowners with professional cleaners.</p>
     <a href="register.php" class="btn" style="margin-top: 1rem;">Get Started</a>
   </div>

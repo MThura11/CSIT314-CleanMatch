@@ -20,7 +20,7 @@ class CleanerManager {
     // Get cleaner details
     public function getCleanerById(int $id): ?array {
         $sql = "SELECT fullName, phoneNumber, email, location, experienceYears, hourlyRate 
-                FROM homecleaners WHERE homeCleanerID = :id LIMIT 1";
+                FROM homeCleaners WHERE homeCleanerID = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -35,23 +35,23 @@ class CleanerManager {
     }
 
     // Get cleaner's selected services
-    public function getcleanerservices(int $cleanerId): array {
-        $stmt = $this->pdo->prepare("SELECT serviceID FROM cleanerservices WHERE homeCleanerID = :id");
+    public function getCleanerServices(int $cleanerId): array {
+        $stmt = $this->pdo->prepare("SELECT serviceID FROM cleanerServices WHERE homeCleanerID = :id");
         $stmt->execute(['id' => $cleanerId]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
     // Save cleaner's selected services (replace existing)
-    public function setcleanerservices(int $cleanerId, array $serviceIds): bool {
+    public function setCleanerServices(int $cleanerId, array $serviceIds): bool {
         try {
             $this->pdo->beginTransaction();
 
             // Delete old services
-            $delStmt = $this->pdo->prepare("DELETE FROM cleanerservices WHERE homeCleanerID = :id");
+            $delStmt = $this->pdo->prepare("DELETE FROM cleanerServices WHERE homeCleanerID = :id");
             $delStmt->execute(['id' => $cleanerId]);
 
             // Insert new ones
-            $insStmt = $this->pdo->prepare("INSERT INTO cleanerservices (homeCleanerID, serviceID) VALUES (:cleanerID, :serviceID)");
+            $insStmt = $this->pdo->prepare("INSERT INTO cleanerServices (homeCleanerID, serviceID) VALUES (:cleanerID, :serviceID)");
             foreach ($serviceIds as $serviceID) {
                 $insStmt->execute([
                     'cleanerID' => $cleanerId,
@@ -69,12 +69,12 @@ class CleanerManager {
 
     // Insert or update cleaner details
     public function upsertCleaner(int $id, array $data): bool {
-        $existsStmt = $this->pdo->prepare("SELECT 1 FROM homecleaners WHERE homeCleanerID = :id");
+        $existsStmt = $this->pdo->prepare("SELECT 1 FROM homeCleaners WHERE homeCleanerID = :id");
         $existsStmt->execute(['id' => $id]);
         $exists = (bool)$existsStmt->fetchColumn();
 
         if ($exists) {
-            $sql = "UPDATE homecleaners SET 
+            $sql = "UPDATE homeCleaners SET 
                         fullName = :fullName,
                         phoneNumber = :phoneNumber,
                         email = :email,
@@ -83,7 +83,7 @@ class CleanerManager {
                         hourlyRate = :hourlyRate
                     WHERE homeCleanerID = :id";
         } else {
-            $sql = "INSERT INTO homecleaners 
+            $sql = "INSERT INTO homeCleaners 
                         (userId, fullName, phoneNumber, email, location, experienceYears, hourlyRate) 
                     VALUES 
                         (:id, :fullName, :phoneNumber, :email, :location, :experienceYears, :hourlyRate)";
@@ -114,7 +114,7 @@ $userId = $_SESSION['userid'];
 $manager = new CleanerManager($dbHost, $dbName, $dbUser, $dbPass);
 
 $services = $manager->getAllServices();
-$cleanerservices = $manager->getcleanerservices($userId);
+$cleanerServices = $manager->getCleanerServices($userId);
 
 $error = '';
 $success = '';
@@ -158,9 +158,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'hourlyRate' => (float)$hourlyRate,
             ];
             if ($manager->upsertCleaner($userId, $data)) {
-                if ($manager->setcleanerservices($userId, $selectedServices)) {
+                if ($manager->setCleanerServices($userId, $selectedServices)) {
                     $success = "Your details and services have been saved successfully.";
-                    $cleanerservices = $selectedServices;
+                    $cleanerServices = $selectedServices;
                     $cleaner = $manager->getCleanerById($userId);
                 } else {
                     $error = "Failed to save services. Please try again.";
@@ -300,7 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php foreach ($services as $service): ?>
             <div class="checkbox-item">
               <input type="checkbox" id="service_<?php echo htmlspecialchars($service['serviceID']); ?>" name="services[]" value="<?php echo htmlspecialchars($service['serviceID']); ?>"
-                <?php echo in_array($service['serviceID'], $cleanerservices) ? 'checked' : ''; ?> />
+                <?php echo in_array($service['serviceID'], $cleanerServices) ? 'checked' : ''; ?> />
               <label for="service_<?php echo htmlspecialchars($service['serviceID']); ?>"><?php echo htmlspecialchars($service['serviceName']); ?></label>
             </div>
         <?php endforeach; ?>

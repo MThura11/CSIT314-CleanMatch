@@ -17,7 +17,7 @@ class OrderManager {
     }
 
     public function getCleanerInfo(int $cleanerId) {
-        $sql = "SELECT fullName, hourlyRate FROM homecleaners WHERE homeCleanerID = :id LIMIT 1";
+        $sql = "SELECT fullName, hourlyRate FROM homeCleaners WHERE homeCleanerID = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $cleanerId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
